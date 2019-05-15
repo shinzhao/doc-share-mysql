@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<!-- Heading -->
+<a href="/user_page" class="text-secondary">Back to Home</a>
+<h1>Manage Users</h1>
+<br>
+
+<!-- User table -->
+<table class="table table-striped">
+  <tr>
+    <th>ID</th>
+    <th>Username</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>E-mail</th>
+    <th>User Type</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{user.id}}</td>
+    <td>{{user.username}}</td>
+    <td>{{user.firstName}}</td>
+    <td>{{user.lastName}}</td>
+    <td>{{user.email}}</td>
+    <td>{{user.user_type}}</td>
+    
+    {% if user.username  == username %}
+    {% elif user.user_type == 'admin' %}
+    <td><a class="btn btn-success" href="/make_user/{{user.id}}">Make User</a></td>
+    {% else %}
+    <td><a class="btn btn-success" href="/make_admin/{{user.id}}">Make Admin</a></td>
+    {% endif %}
+
+    {% if user.username == username %}
+    {% elif not user.is_in_blacklist %}
+    <td><a class="btn btn-danger" href="/ban_user/{{user.id}}">Ban</a></td>
+    {% else %}
+    <td><a class="btn btn-warning" href="/unban_user/{{user.id}}">Unban</a></td>
+    {% endif %}
+    <td></td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endblock %}

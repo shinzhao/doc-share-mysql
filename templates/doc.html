@@ -1,0 +1,13 @@
+{% extends 'docs.html' %}
+{% block content %}
+<br>
+{% if session.logged_in %}
+<a href="/user_page" class="text-secondary">Back to Home</a>
+{% else %}
+<a href="/docs" class="text-secondary">Back to Docs</a>
+{% endif %}
+<h1>{{doc.title}}</h1>
+<small>by {{doc.owner}}, last modified on {{doc.modify_date}}</small>
+<hr>
+<p>{{doc.content}}</p>
+{% endblock %}

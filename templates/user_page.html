@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block content %}
+<div>
+  <h1 class="welcome-brand">Welcome back, {{session.username}}!</h1>
+  <br>
+  <a class="btn btn-primary" href="/create_doc">Create Document</a>
+  {% if session.user_type  == 'admin' %}
+  <a class="btn btn-success" href="/manage_users">Manage Users</a>
+  {% endif %}
+</div>
+<br>
+<table class="table table-striped">
+  <tr>
+    <th>Doc ID</th>
+    <th>Title</th>
+    <th>Owner</th>
+    <th>Status</th>
+    <th>Date Created</th>
+    <th>Last Modify</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+  {% for doc in docs %}
+  <tr>
+    <td>{{doc.id}}</td>
+    <td><a href="{{url_for('doc', id=doc.id)}}">{{doc.title}}</a></td>
+    <td>{{doc.owner}}</td>
+    <td>{{doc.status}}</td>
+    <td>{{doc.create_date}}</td>
+    <td>{{doc.modify_date}}</td>
+    <td><a href="/doc_hist_list/{{doc.id}}" class="btn btn-secondary float-right">History</a></td>
+    <td><a href="/edit_doc/{{doc.id}}" class="btn btn-secondary float-right">Edit</a></td>
+    <td>
+      {% if session.username == doc.owner or session.user_type  == 'admin' %}
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal{{doc.id}}">
+        Delete
+      </button>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal{{doc.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Warning!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              Do you want to delete document: <em>{{doc.title}} (Doc ID: {{doc.id}})</em> ?
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <form action="{{url_for('delete_doc', id=doc.id)}}" method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="submit" value="Delete" class="btn btn-danger">
+              </form>
+              <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
+            </div>
+          </div>
+        </div>
+      </div>
+      {% else %}
+      <button type="button" class="btn btn-danger" disabled>
+          Delete
+      </button>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+
+</table>
+{% endblock %}

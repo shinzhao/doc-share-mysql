@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<a href="/user_page" class="text-secondary">Back to Home</a>
+<h1>Document History</h1>
+<ul class="list-group">
+  {% for doc in docs: %}
+  <li class="list-group-item"><a href="/doc_hist/{{doc.record_id}}" class="text-secondary">{{doc.title}}<em>   by {{doc.user}} at {{doc.modify_date}}</em></a></li>
+  {% endfor %}
+</ul>
+
+{% endblock %}

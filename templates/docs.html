@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h1>Docs</h1>
+<ul class="list-group">
+  {% for doc in docs: %}
+  <li class="list-group-item"><a href="doc/{{doc.id}}" class="text-secondary">{{doc.title}}<em>   by {{doc.owner}}</em></a></li>
+  {% endfor %}
+</ul>
+
+{% endblock %}
